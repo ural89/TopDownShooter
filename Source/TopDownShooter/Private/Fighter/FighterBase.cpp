@@ -54,6 +54,7 @@ void AFighterBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	UpdateMovement();
 	LookMoveDirection(DeltaTime);
+	UpdateAnimationVariables();
 
 }
 
@@ -62,6 +63,7 @@ void AFighterBase::UpdateMovement()
 	MoveDirection.Normalize();
 	CapsuleComponent->AddForce(MoveDirection * MovePower);
 }
+
 void AFighterBase::LookMoveDirection(float DeltaTime)
 {
 	FRotator LookRotation = MoveDirection.Rotation();
@@ -69,6 +71,17 @@ void AFighterBase::LookMoveDirection(float DeltaTime)
 	if (MoveDirection != FVector::Zero())
 		CapsuleComponent->SetWorldRotation(LookRotation);
 }
+void AFighterBase::UpdateAnimationVariables()
+{
+	FVector Velocity = GetVelocity();
+	FRotator Rotation = GetActorRotation();
+	Velocity = Rotation.UnrotateVector(Velocity);
+	FRotator Rotator = Velocity.Rotation();
+
+	CurrentDirection = Rotator.Yaw;
+	CurrentMoveSpeed = GetVelocity().Length();
+}
+
 void AFighterBase::MoveForward(float axisValue)
 {
 	MoveDirection.X = axisValue;

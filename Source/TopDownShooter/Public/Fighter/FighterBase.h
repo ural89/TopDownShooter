@@ -21,7 +21,13 @@ public:
 	void MoveForward(float axisValue);
 	void MoveRight(float axisValue);
 
-	
+	//Animation variables
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float CurrentMoveSpeed;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float CurrentDirection;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -31,6 +37,7 @@ private:
 
 	void UpdateMovement();
 	void LookMoveDirection(float DeltaTime);
+	void UpdateAnimationVariables();
 
 	UPROPERTY(EditAnywhere)
 	class UCapsuleComponent* CapsuleComponent;
@@ -52,4 +59,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class USpringArmComponent* SpringArm;
+
+	
 };
