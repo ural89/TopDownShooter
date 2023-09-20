@@ -1,5 +1,5 @@
 # TopDownShooter
-Unreal Engine C++ project where every character is created from a Pawn.
+Educational Unreal Engine C++ project where every character is created from a Pawn.
 
 ## Aim of the project
 Unreal Engine has built in Character class that handles movements, animations, navmesh.
