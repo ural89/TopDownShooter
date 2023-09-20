@@ -16,6 +16,7 @@ AFighterBase::AFighterBase()
 	CapsuleComponent->SetCapsuleRadius(22);
 	CapsuleComponent->SetSimulatePhysics(true);
 	CapsuleComponent->SetLinearDamping(3);
+	CapsuleComponent->SetAngularDamping(3);
 	CapsuleComponent->BodyInstance.bLockXRotation = true;
 	CapsuleComponent->BodyInstance.bLockYRotation = true;
 	CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -25,7 +26,7 @@ AFighterBase::AFighterBase()
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	MeshComponent->SetupAttachment(RootComponent);
 
-	MovementComponent = CreateDefaultSubobject<UFighterMovement>(TEXT("MovementComponent"));
+	MovementComponent = CreateDefaultSubobject<UFighterMovement>(TEXT("MovementComponent")); //NavMesh doesnt work if you dont have ufloatmovementcomponent
 	MovementComponent->UpdatedComponent = RootComponent;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
@@ -44,7 +45,7 @@ AFighterBase::AFighterBase()
 void AFighterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	//MovementComponent->SetMaxSpeed(0);
+	MovementComponent->SetMaxSpeed(0);
 }
 
 // Called every frame

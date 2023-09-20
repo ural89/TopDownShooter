@@ -4,5 +4,5 @@
 #include "Fighter/FighterMovement.h"
 void UFighterMovement::ApplyControlInputToVelocity(float DeltaTime)
 {
-    //TODO: sktr et normal yap
+    Super::ApplyControlInputToVelocity(DeltaTime);
 }
