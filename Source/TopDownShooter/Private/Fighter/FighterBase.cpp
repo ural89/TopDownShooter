@@ -77,9 +77,10 @@ void AFighterBase::UpdateAnimationVariables()
 	FRotator Rotation = GetActorRotation();
 	Velocity = Rotation.UnrotateVector(Velocity);
 	FRotator Rotator = Velocity.Rotation();
-
+	float MaxAnimationSpeed = 100;
+	float MaxPawnSpeed = 1000;
 	CurrentDirection = Rotator.Yaw;
-	CurrentMoveSpeed = GetVelocity().Length();
+	CurrentMoveSpeed = FMath::Lerp(0, MaxAnimationSpeed, GetVelocity().Length() / MaxPawnSpeed);
 }
 
 void AFighterBase::MoveForward(float axisValue)
