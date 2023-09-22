@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Fighter/FighterMovement.h"
+#include "Fighter/Inventory.h"
 // Sets default values
 AFighterBase::AFighterBase()
 {
@@ -39,6 +40,8 @@ AFighterBase::AFighterBase()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+
+	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 }
 
 // Called when the game starts or when spawned

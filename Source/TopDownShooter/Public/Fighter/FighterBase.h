@@ -49,6 +49,9 @@ private:
 	class UFighterMovement* MovementComponent;
 	
 	UPROPERTY(EditAnywhere)
+	class UInventory* Inventory;
+
+	UPROPERTY(EditAnywhere)
 	float MovePower = 250000.f;
 
 	UPROPERTY()
