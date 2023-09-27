@@ -24,4 +24,8 @@ void AWeapon::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+void AWeapon::Fire()
+{
+	
+}
 
