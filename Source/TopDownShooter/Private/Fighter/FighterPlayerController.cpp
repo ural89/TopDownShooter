@@ -11,10 +11,16 @@ void AFighterPlayerController::SetupInputComponent()
     Super::SetupInputComponent();
     InputComponent->BindAxis(TEXT("MoveForward"), this, &AFighterPlayerController::MoveForward);
     InputComponent->BindAxis(TEXT("MoveRight"), this, &AFighterPlayerController::MoveRight); // TODO: make this controller as default player controller
-} // TODO: delete player fighter script make only one type
+} 
 void AFighterPlayerController::BeginPlay()
 {
     Super::BeginPlay();
+}
+
+void AFighterPlayerController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+    OwnerFighter->LookMoveDirection();
 }
 void AFighterPlayerController::OnPossess(APawn* InPawn)
 {

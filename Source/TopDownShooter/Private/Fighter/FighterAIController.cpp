@@ -30,7 +30,7 @@ void AFighterAIController::OnPossess(APawn *InPawn)
     OwnerFighter = Cast<AFighterBase>(InPawn);
 
     FTimerHandle CreatePathTimerHandle;
-    GetWorld()->GetTimerManager().SetTimer(CreatePathTimerHandle, this, &AFighterAIController::UpdatePath, 0.1f, true);
+    // GetWorld()->GetTimerManager().SetTimer(CreatePathTimerHandle, this, &AFighterAIController::UpdatePath, 0.1f, true);
 }
 void AFighterAIController::BeginPlay()
 {
@@ -39,31 +39,54 @@ void AFighterAIController::BeginPlay()
 void AFighterAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    if (canMove)
+    if (TargetActor)
     {
-        MoveToDirection();
+        LookAtTarget();
+        //MoveToTarget();
     }
 }
 
 void AFighterAIController::UpdatePath()
 {
-    FVector Destination = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-    MoveToLocation(Destination, stoppingRange, true, true);
-    UE_LOG(LogTemp, Warning, TEXT("MoveDirection %f, %f"), Destination.X, Destination.Y);
+    if (TargetActor)
+    {
+        FVector Destination = TargetActor->GetActorLocation();
+        // UE_LOG(LogTemp, Warning, TEXT("MoveDirection %f, %f"), Destination.X, Destination.Y);
+    }
 }
-void AFighterAIController::MoveToDirection()
+void AFighterAIController::MoveToTarget()
 {
-    FVector MoveDirection = GetPathFollowingComponent()->GetCurrentDirection();
-    OwnerFighter->MoveForward(MoveDirection.X);
-    OwnerFighter->MoveRight(MoveDirection.Y);
-}
+    if (TargetActor)
+    {
+        FVector DirectionToTarget = (TargetActor->GetActorLocation() - OwnerFighter->GetActorLocation()).GetSafeNormal();
 
-void AFighterAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus)
+        FVector MoveDirection = DirectionToTarget;
+
+        OwnerFighter->MoveForward(MoveDirection.X);
+        OwnerFighter->MoveRight(MoveDirection.Y);
+    }
+    else
+    {
+        Stop();
+    }
+}
+void AFighterAIController::LookAtTarget()
+{
+    if (TargetActor)
+    {
+        FVector DirectionToTarget = (TargetActor->GetActorLocation() - OwnerFighter->GetActorLocation()).GetSafeNormal();
+       // UE_LOG(LogTemp, Warning, TEXT("%f, %f"), DirectionToTarget.X, DirectionToTarget.Y);
+        OwnerFighter->LookDirection(DirectionToTarget);
+    }
+}
+void AFighterAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) // this is only called once detected
 {
     if (Actor)
     {
+        TargetActor = Actor;
         canMove = true;
         UE_LOG(LogTemp, Warning, TEXT("Percieved Actor"));
+        UpdatePath();
     }
 }
 void AFighterAIController::Stop()
@@ -77,7 +100,7 @@ void AFighterAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFo
     Super::OnMoveCompleted(RequestID, Result);
     if (Result.IsSuccess())
     {
-
-        Stop();
+        TargetActor = nullptr;
+        //   Stop();
     }
 }

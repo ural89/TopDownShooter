@@ -11,7 +11,7 @@ class TOPDOWNSHOOTER_API AFighterBase : public APawn
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this pawn's properties
 	AFighterBase();
 
@@ -20,36 +20,36 @@ public:
 
 	void MoveForward(float axisValue);
 	void MoveRight(float axisValue);
+	void LookMoveDirection();
+	void LookDirection(FVector LookDirection);
 
-	//Animation variables
+	// Animation variables
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentMoveSpeed;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentDirection;
 
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-
 	void UpdateMovement();
-	void LookMoveDirection(float DeltaTime);
+
 	void UpdateAnimationVariables();
 
 	UPROPERTY(EditAnywhere)
-	class UCapsuleComponent* CapsuleComponent;
+	class UCapsuleComponent *CapsuleComponent;
 
 	UPROPERTY(EditAnywhere)
-	USkeletalMeshComponent* MeshComponent;
+	USkeletalMeshComponent *MeshComponent;
 
 	UPROPERTY()
-	class UFighterMovement* MovementComponent;
-	
+	class UFighterMovement *MovementComponent;
+
 	UPROPERTY(EditAnywhere)
-	class UInventory* Inventory;
+	class UInventory *Inventory;
 
 	UPROPERTY(EditAnywhere)
 	float MovePower = 250000.f;
@@ -58,10 +58,8 @@ private:
 	FVector MoveDirection = FVector::Zero();
 
 	UPROPERTY(EditAnywhere)
-	class UCameraComponent* Camera;
+	class UCameraComponent *Camera;
 
 	UPROPERTY(EditAnywhere)
-	class USpringArmComponent* SpringArm;
-
-	
+	class USpringArmComponent *SpringArm;
 };

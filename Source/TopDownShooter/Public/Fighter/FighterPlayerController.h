@@ -15,6 +15,7 @@ class TOPDOWNSHOOTER_API AFighterPlayerController : public APlayerController
 	GENERATED_BODY()
 public:
 	AFighterPlayerController();
+	void Tick(float DeltaTime) override;
 	virtual void SetupInputComponent() override;
 	void MoveRight(float AxisValue);
 	void MoveForward(float AxisValue);

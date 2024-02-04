@@ -33,12 +33,13 @@ private:
 
 
 	class AFighterBase* OwnerFighter;
-	
 	class UAISenseConfig_Sight* AISight;
+	AActor* TargetActor;
 
 	void SetupPerception();
 	void UpdatePath();
-	void MoveToDirection();
+	void MoveToTarget();
+	void LookAtTarget();
 
 	UFUNCTION()
 	void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);

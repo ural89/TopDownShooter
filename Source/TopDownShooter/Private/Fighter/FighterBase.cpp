@@ -6,6 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Fighter/FighterMovement.h"
 #include "Fighter/Inventory.h"
+
 // Sets default values
 AFighterBase::AFighterBase()
 {
@@ -27,7 +28,7 @@ AFighterBase::AFighterBase()
 	MeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	MeshComponent->SetupAttachment(RootComponent);
 
-	MovementComponent = CreateDefaultSubobject<UFighterMovement>(TEXT("MovementComponent")); //NavMesh doesnt work if you dont have ufloatmovementcomponent
+	MovementComponent = CreateDefaultSubobject<UFighterMovement>(TEXT("MovementComponent")); // NavMesh doesnt work if you dont have ufloatmovementcomponent
 	MovementComponent->UpdatedComponent = RootComponent;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
@@ -56,9 +57,8 @@ void AFighterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UpdateMovement();
-	LookMoveDirection(DeltaTime);
+	// LookMoveDirection();
 	UpdateAnimationVariables();
-
 }
 
 void AFighterBase::UpdateMovement()
@@ -67,12 +67,18 @@ void AFighterBase::UpdateMovement()
 	CapsuleComponent->AddForce(MoveDirection * MovePower);
 }
 
-void AFighterBase::LookMoveDirection(float DeltaTime)
+void AFighterBase::LookMoveDirection()
 {
-	FRotator LookRotation = MoveDirection.Rotation();
-	LookRotation = FMath::Lerp(CapsuleComponent->GetComponentRotation(), LookRotation, DeltaTime * 5);
-	if (MoveDirection != FVector::Zero())
-		CapsuleComponent->SetWorldRotation(LookRotation);
+	LookDirection(MoveDirection);
+}
+
+void AFighterBase::LookDirection(FVector LookDirection)
+{
+	if (LookDirection == FVector::Zero())
+		return;
+	FRotator LookRotation = LookDirection.Rotation();
+	LookRotation = FMath::Lerp(CapsuleComponent->GetComponentRotation(), LookRotation, GetWorld()->GetDeltaSeconds() * 5);
+	CapsuleComponent->SetWorldRotation(LookRotation);
 }
 void AFighterBase::UpdateAnimationVariables()
 {
