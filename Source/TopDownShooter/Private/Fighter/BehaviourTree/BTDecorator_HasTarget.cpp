@@ -2,12 +2,12 @@
 
 #include "Fighter/BehaviourTree/BTDecorator_HasTarget.h"
 #include "Fighter/FighterAIController.h"
-#include "BehaviorTree/BlackboardComponent.h"
+
 
 UBTDecorator_HasTarget::UBTDecorator_HasTarget()
 {
     NodeName = "Has Target?";
-    INIT_DECORATOR_NODE_NOTIFY_FLAGS();
+    //INIT_DECORATOR_NODE_NOTIFY_FLAGS();
 }
 bool UBTDecorator_HasTarget::CalculateRawConditionValue(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory) const
 {
@@ -17,14 +17,7 @@ bool UBTDecorator_HasTarget::CalculateRawConditionValue(UBehaviorTreeComponent &
 void UBTDecorator_HasTarget::TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, float DeltaSeconds) // needs to have abort mode to tick!
 {
     Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
-    if (auto TargetActor = Cast<AFighterAIController>(OwnerComp.GetAIOwner())->GetTargetActor())
-    {
-        OwnerComp.GetBlackboardComponent()->SetValueAsObject(GetSelectedBlackboardKey(), TargetActor);
-    }
-    else
-    {
-        OwnerComp.GetBlackboardComponent()->ClearValue(GetSelectedBlackboardKey());
-    }
+   
     // if(Cast<AFighterAIController>(OwnerComp.GetAIOwner())->GetTargetActor() != nullptr)
     // {
 

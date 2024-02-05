@@ -13,5 +13,8 @@ UCLASS()
 class TOPDOWNSHOOTER_API UBTService_AITargetValueSetter : public UBTService_BlackboardBase
 {
 	GENERATED_BODY()
-	
+public:
+	UBTService_AITargetValueSetter();
+protected:
+	void TickNode(UBehaviorTreeComponent &OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 };
