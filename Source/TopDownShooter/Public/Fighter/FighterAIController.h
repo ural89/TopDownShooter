@@ -19,6 +19,11 @@ public:
 	void Tick(float DeltaTime) override;
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult &Result) override;
 	virtual void BeginPlay() override;
+
+	AActor* GetTargetActor() const
+	{
+		return TargetActor;
+	}
 protected:
 	virtual void OnPossess(APawn *InPawn) override;
 
