@@ -35,6 +35,10 @@ void AFighterAIController::OnPossess(APawn *InPawn)
 void AFighterAIController::BeginPlay()
 {
     Super::BeginPlay();
+    if(PedestrianBehavior != nullptr)
+    {
+        RunBehaviorTree(PedestrianBehavior);
+    }
 }
 void AFighterAIController::Tick(float DeltaTime)
 {

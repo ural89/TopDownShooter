@@ -40,11 +40,12 @@ private:
 	void UpdatePath();
 	void MoveToTarget();
 	void LookAtTarget();
+	void Stop();
 
 	UFUNCTION()
 	void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 	
-	void Stop();
-
+	UPROPERTY(EditAnywhere)
+	class UBehaviorTree* PedestrianBehavior;
 
 };
