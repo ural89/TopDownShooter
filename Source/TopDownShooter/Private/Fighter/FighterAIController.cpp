@@ -48,7 +48,7 @@ void AFighterAIController::Tick(float DeltaTime)
 
 }
 
-void AFighterAIController::UpdatePath() //TODO: wire this to BT
+void AFighterAIController::UpdatePath() //TODO: wire this to BT to a service
 {
     if (MoveTarget)
     {

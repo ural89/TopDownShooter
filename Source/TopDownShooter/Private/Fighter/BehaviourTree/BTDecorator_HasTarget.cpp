@@ -11,10 +11,11 @@ UBTDecorator_HasTarget::UBTDecorator_HasTarget()
 }
 bool UBTDecorator_HasTarget::CalculateRawConditionValue(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory) const
 {
+    Super::CalculateRawConditionValue(OwnerComp, NodeMemory);
     UE_LOG(LogTemp, Warning, TEXT("Evauliating")); //This not evaluating unless something has changed from blackboard!
     return Cast<AFighterAIController>(OwnerComp.GetAIOwner())->GetTargetActor() != nullptr;
 }
-void UBTDecorator_HasTarget::TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, float DeltaSeconds) // needs to have abort mode to tick!
+void UBTDecorator_HasTarget::TickNode(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, float DeltaSeconds) // needs to have abort mode (self or low priority) to tick!
 {
     Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
    
