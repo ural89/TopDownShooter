@@ -20,10 +20,13 @@ public:
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult &Result) override;
 	virtual void BeginPlay() override;
 
-	AActor* GetTargetActor() const
+	AActor *GetTargetActor() const
 	{
 		return TargetActor;
 	}
+	void MoveToTarget();
+	void LookAtTarget();
+
 protected:
 	virtual void OnPossess(APawn *InPawn) override;
 
@@ -31,26 +34,22 @@ private:
 	bool canMove = false;
 	float stoppingRange = 200;
 
-	//Perception variables
+	// Perception variables
 	float sightRadius = 600;
 	float looseSightRadius = 200;
-	
 
-
-	class AFighterBase* OwnerFighter;
-	class UAISenseConfig_Sight* AISight;
-	AActor* TargetActor;
+	class AFighterBase *OwnerFighter;
+	class UAISenseConfig_Sight *AISight;
+	AActor *TargetActor;
 
 	void SetupPerception();
 	void UpdatePath();
-	void MoveToTarget();
-	void LookAtTarget();
+
 	void Stop();
 
 	UFUNCTION()
-	void OnPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
-	
-	UPROPERTY(EditAnywhere)
-	class UBehaviorTree* PedestrianBehavior;
+	void OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus);
 
+	UPROPERTY(EditAnywhere)
+	class UBehaviorTree *PedestrianBehavior;
 };

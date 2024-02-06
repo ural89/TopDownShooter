@@ -43,14 +43,14 @@ void AFighterAIController::BeginPlay()
 void AFighterAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    if (TargetActor)
-    {
-       LookAtTarget();
-       MoveToTarget();
-    }
+    // if (TargetActor)
+    // {
+    //    LookAtTarget();
+    //    MoveToTarget();
+    // }
 }
 
-void AFighterAIController::UpdatePath()
+void AFighterAIController::UpdatePath() //TODO: wire this to BT
 {
     if (TargetActor)
     {
