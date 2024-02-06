@@ -22,11 +22,12 @@ public:
 
 	AActor *GetTargetActor() const
 	{
-		return TargetActor;
+		return PercievedEnemy;
 	}
 	void MoveToTarget();
 	void LookAtTarget();
-
+	void SetLookTargetToEnemy();
+	void SetMoveTargetToEnemy();
 protected:
 	virtual void OnPossess(APawn *InPawn) override;
 
@@ -41,7 +42,9 @@ private:
 	class AFighterBase *OwnerFighter;
 	class UAISenseConfig_Sight *AISight;
 	AActor *TargetActor;
-
+	AActor *PercievedEnemy;
+	AActor *LookTarget;
+	AActor *MoveTarget;
 	void SetupPerception();
 	void UpdatePath();
 

@@ -43,25 +43,22 @@ void AFighterAIController::BeginPlay()
 void AFighterAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-    // if (TargetActor)
-    // {
-    //    LookAtTarget();
-    //    MoveToTarget();
-    // }
+    MoveToTarget();
+    LookAtTarget();
+
 }
 
 void AFighterAIController::UpdatePath() //TODO: wire this to BT
 {
-    if (TargetActor)
+    if (MoveTarget)
     {
-        FVector Destination = TargetActor->GetActorLocation();
+        FVector Destination = MoveTarget->GetActorLocation();
         MoveToLocation(Destination, 1, false); //TODO: create your own MoveToLocation with navigationv1 (it is written inside MoveToLocation method)
-        // UE_LOG(LogTemp, Warning, TEXT("MoveDirection %f, %f"), Destination.X, Destination.Y);
     }
 }
 void AFighterAIController::MoveToTarget()
 {
-    if (TargetActor)
+    if (MoveTarget)
     {
         FVector DirectionToTarget = GetPathFollowingComponent()->GetCurrentDirection(); // (TargetActor->GetActorLocation() - OwnerFighter->GetActorLocation()).GetSafeNormal();
 
@@ -77,18 +74,17 @@ void AFighterAIController::MoveToTarget()
 }
 void AFighterAIController::LookAtTarget()
 {
-    if (TargetActor)
+    if (LookTarget)
     {
-        FVector DirectionToTarget = (TargetActor->GetActorLocation() - OwnerFighter->GetActorLocation()).GetSafeNormal();
-        // UE_LOG(LogTemp, Warning, TEXT("%f, %f"), DirectionToTarget.X, DirectionToTarget.Y);
+        FVector DirectionToTarget = (LookTarget->GetActorLocation() - OwnerFighter->GetActorLocation()).GetSafeNormal();
         OwnerFighter->LookDirection(DirectionToTarget);
     }
 }
 void AFighterAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) // this is only called once detected
 {
-    if (Actor)
+    if (Actor) //TODO: add if enemy for this actor
     {
-        TargetActor = Actor;
+        PercievedEnemy = Actor;
         canMove = true;
         UE_LOG(LogTemp, Warning, TEXT("Percieved Actor"));
         UpdatePath();
@@ -96,8 +92,17 @@ void AFighterAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimul
     else //TODO: handle forgetting 
     {
         UE_LOG(LogTemp, Warning, TEXT("NOT Percieved Actor"));
-        TargetActor = nullptr;
+        PercievedEnemy = nullptr;
     }
+}
+void AFighterAIController::SetLookTargetToEnemy()
+{
+    LookTarget = PercievedEnemy;
+}
+void AFighterAIController::SetMoveTargetToEnemy()
+{
+    UE_LOG(LogTemp, Warning, TEXT("MoveTarget set to enemy"));
+    MoveTarget = PercievedEnemy;
 }
 void AFighterAIController::Stop()
 {

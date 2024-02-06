@@ -4,18 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "BTTask_MoveToTarget.generated.h"
+#include "BTTask_LookAtTarget.generated.h"
 
 /**
- *
+ * 
  */
 UCLASS()
-class TOPDOWNSHOOTER_API UBTTask_MoveToTarget : public UBTTask_BlackboardBase
+class TOPDOWNSHOOTER_API UBTTask_LookAtTarget : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
-public:
-	UBTTask_MoveToTarget();
-
 protected:
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory) override;
 	void OnTaskFinished(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, EBTNodeResult::Type TaskResult);
