@@ -30,7 +30,7 @@ void AFighterAIController::OnPossess(APawn *InPawn)
     OwnerFighter = Cast<AFighterBase>(InPawn);
 
     FTimerHandle CreatePathTimerHandle;
-     GetWorld()->GetTimerManager().SetTimer(CreatePathTimerHandle, this, &AFighterAIController::UpdatePath, 0.1f, true);
+    GetWorld()->GetTimerManager().SetTimer(CreatePathTimerHandle, this, &AFighterAIController::UpdatePath, 0.1f, true);
 }
 void AFighterAIController::BeginPlay()
 {
@@ -45,15 +45,14 @@ void AFighterAIController::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
     MoveToTarget();
     LookAtTarget();
-
 }
 
-void AFighterAIController::UpdatePath() //TODO: wire this to BT to a service
+void AFighterAIController::UpdatePath() // TODO: wire this to BT to a service
 {
     if (MoveTarget)
     {
         FVector Destination = MoveTarget->GetActorLocation();
-        MoveToLocation(Destination, 1, false); //TODO: create your own MoveToLocation with navigationv1 (it is written inside MoveToLocation method)
+        MoveToLocation(Destination, 1, false); // TODO: create your own MoveToLocation with navigationv1 (it is written inside MoveToLocation method)
     }
 }
 void AFighterAIController::MoveToTarget()
@@ -82,14 +81,14 @@ void AFighterAIController::LookAtTarget()
 }
 void AFighterAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) // this is only called once detected
 {
-    if (Actor) //TODO: add if enemy for this actor
+    if (Actor) // TODO: add if enemy for this actor
     {
         PercievedEnemy = Actor;
         canMove = true;
         UE_LOG(LogTemp, Warning, TEXT("Percieved Actor"));
         UpdatePath();
     }
-    else //TODO: handle forgetting 
+    else // TODO: handle forgetting
     {
         UE_LOG(LogTemp, Warning, TEXT("NOT Percieved Actor"));
         PercievedEnemy = nullptr;
@@ -103,6 +102,14 @@ void AFighterAIController::SetMoveTargetToEnemy()
 {
     UE_LOG(LogTemp, Warning, TEXT("MoveTarget set to enemy"));
     MoveTarget = PercievedEnemy;
+}
+float AFighterAIController::GetDistanceToTarget()
+{
+    if (MoveTarget)
+    {
+        return FVector::Dist(OwnerFighter->GetActorLocation(), MoveTarget->GetActorLocation());
+    }
+    return 100000;
 }
 void AFighterAIController::Stop()
 {

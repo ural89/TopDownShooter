@@ -7,7 +7,7 @@
 UBTDecorator_IsTargetFarAway::UBTDecorator_IsTargetFarAway()
 {
     NodeName = "Is Target Faraway";
-    bNotifyTick = true;
+   // bNotifyTick = true;
 
 }
 

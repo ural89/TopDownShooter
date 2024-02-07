@@ -28,6 +28,10 @@ public:
 	void LookAtTarget();
 	void SetLookTargetToEnemy();
 	void SetMoveTargetToEnemy();
+
+	float GetDistanceToTarget();
+
+
 protected:
 	virtual void OnPossess(APawn *InPawn) override;
 
