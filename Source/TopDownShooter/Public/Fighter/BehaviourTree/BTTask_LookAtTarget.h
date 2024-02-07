@@ -13,6 +13,8 @@ UCLASS()
 class TOPDOWNSHOOTER_API UBTTask_LookAtTarget : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
+public:
+	UBTTask_LookAtTarget();
 protected:
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory) override;
 	void OnTaskFinished(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, EBTNodeResult::Type TaskResult);

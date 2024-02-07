@@ -28,7 +28,9 @@ public:
 	void LookAtTarget();
 	void SetLookTargetToEnemy();
 	void SetMoveTargetToEnemy();
-
+	void SetMoveTargetToCar();
+	void ClearLookTarget();
+	void ClearMoveTarget();
 	float GetDistanceToTarget();
 
 
@@ -49,6 +51,9 @@ private:
 	AActor *PercievedEnemy;
 	AActor *LookTarget;
 	AActor *MoveTarget;
+
+	//AActor *Car; //TODO: find this via colliders
+	
 	void SetupPerception();
 	void UpdatePath();
 

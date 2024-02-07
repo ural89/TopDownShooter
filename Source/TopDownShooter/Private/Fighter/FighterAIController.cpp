@@ -103,6 +103,19 @@ void AFighterAIController::SetMoveTargetToEnemy()
     UE_LOG(LogTemp, Warning, TEXT("MoveTarget set to enemy"));
     MoveTarget = PercievedEnemy;
 }
+
+void AFighterAIController::SetMoveTargetToCar()
+{
+    MoveTarget = OwnerFighter->Car;
+}
+void AFighterAIController::ClearMoveTarget()
+{
+    MoveTarget = nullptr;
+}
+void AFighterAIController::ClearLookTarget()
+{
+    LookTarget = nullptr;
+}
 float AFighterAIController::GetDistanceToTarget()
 {
     if (MoveTarget)

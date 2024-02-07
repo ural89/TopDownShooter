@@ -9,6 +9,13 @@
 /**
  *
  */
+UENUM(BlueprintType)
+enum class EMoveType : uint8
+{
+	Enemy,
+	Car,
+};
+
 UCLASS()
 class TOPDOWNSHOOTER_API UBTTask_MoveToTarget : public UBTTask_BlackboardBase
 {
@@ -19,4 +26,8 @@ public:
 protected:
 	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory) override;
 	void OnTaskFinished(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, EBTNodeResult::Type TaskResult);
+
+private:
+	UPROPERTY(EditAnywhere, meta = (AllowPrivateAccess = "true"))
+	EMoveType MoveType;
 };

@@ -2,7 +2,13 @@
 
 #include "Fighter/BehaviourTree/BTTask_LookAtTarget.h"
 #include "Fighter/FighterAIController.h"
-//TODO: create enum for look targets
+
+// TODO: create enum for look targets
+
+UBTTask_LookAtTarget::UBTTask_LookAtTarget()
+{
+    NodeName = "LookAtTarget";
+}
 EBTNodeResult::Type UBTTask_LookAtTarget::ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory)
 {
     Super::ExecuteTask(OwnerComp, NodeMemory);
@@ -17,6 +23,9 @@ EBTNodeResult::Type UBTTask_LookAtTarget::ExecuteTask(UBehaviorTreeComponent &Ow
 void UBTTask_LookAtTarget::OnTaskFinished(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, EBTNodeResult::Type TaskResult)
 {
     Super::OnTaskFinished(OwnerComp, NodeMemory, TaskResult);
-    UE_LOG(LogTemp, Warning, TEXT("TaskFinished"));
-    // TODO: clear move target
+
+    if (auto FighterOwner = Cast<AFighterAIController>(OwnerComp.GetAIOwner()))
+    {
+        FighterOwner->ClearLookTarget();
+    }
 }

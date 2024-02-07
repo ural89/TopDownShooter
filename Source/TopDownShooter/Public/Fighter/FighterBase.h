@@ -30,6 +30,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentDirection;
 
+	UPROPERTY(EditAnywhere)
+	AActor* Car; //TODO: delete
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
