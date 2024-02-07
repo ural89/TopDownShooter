@@ -57,6 +57,16 @@ void AFighterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UpdateMovement();
+
+	if(!isInCar)
+	{
+		if(Car)
+		{
+			AttachToActor(Car, FAttachmentTransformRules::KeepRelativeTransform, TEXT("PawnSocket"));
+			UE_LOG(LogTemp, Warning, TEXT("attached to car"));
+			isInCar = true;
+		}
+	}
 	// LookMoveDirection();
 	UpdateAnimationVariables();
 }

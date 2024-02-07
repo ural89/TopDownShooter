@@ -37,6 +37,7 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+bool isInCar = false;
 	void UpdateMovement();
 
 	void UpdateAnimationVariables();
