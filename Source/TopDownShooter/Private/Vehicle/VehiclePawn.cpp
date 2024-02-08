@@ -9,7 +9,7 @@ void AVehiclePawn::Tick(float DeltaSeconds)
 
    if (UChaosVehicleMovementComponent *VehicleMovementComponent = GetVehicleMovement())
    {
-      VehicleMovementComponent->SetSteeringInput(34.0f); 
+      VehicleMovementComponent->SetSteeringInput(1.f); 
       VehicleMovementComponent->SetThrottleInput(0.4f);
    }
 }
