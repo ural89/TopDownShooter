@@ -34,7 +34,7 @@ public:
 	bool IsDriving = false;
 
 	UPROPERTY(EditAnywhere)
-	AActor *Car; // TODO: delete
+	APawn *Car; // TODO: delete
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

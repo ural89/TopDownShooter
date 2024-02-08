@@ -80,12 +80,12 @@ void AFighterBase::UpdateMovement()
 
 void AFighterBase::LookMoveDirection()
 {
-	LookDirection(MoveDirection);
+	 LookDirection(MoveDirection);
 }
 
 void AFighterBase::LookDirection(FVector LookDirection)
 {
-	if (LookDirection == FVector::Zero())
+	if (LookDirection == FVector::Zero() || CapsuleComponent == nullptr)
 		return;
 	FRotator LookRotation = LookDirection.Rotation();
 	LookRotation = FMath::Lerp(CapsuleComponent->GetComponentRotation(), LookRotation, GetWorld()->GetDeltaSeconds() * 5);
@@ -114,9 +114,14 @@ void AFighterBase::MoveRight(float axisValue)
 }
 void AFighterBase::Interact()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Interacted!!"));
+
+	if (Car)
+		GetController()->Possess(Car);
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Car is not attached!"));
+	}
 }
-void AFighterBase::GetInVehicle(AVehiclePawn& Vehicle)
+void AFighterBase::GetInVehicle(AVehiclePawn &Vehicle)
 {
-	
 }
