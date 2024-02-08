@@ -22,7 +22,7 @@ public:
 	void MoveRight(float axisValue);
 	void LookMoveDirection();
 	void LookDirection(FVector LookDirection);
-
+	void Interact();
 	// Animation variables
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentMoveSpeed;
@@ -30,17 +30,21 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	float CurrentDirection;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	bool IsDriving = false;
+
 	UPROPERTY(EditAnywhere)
-	AActor* Car; //TODO: delete
+	AActor *Car; // TODO: delete
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-bool isInCar = false;
+	bool isInCar = false;
 	void UpdateMovement();
-
 	void UpdateAnimationVariables();
+
+	void GetInVehicle(class AVehiclePawn &Vehicle);
 
 	UPROPERTY(EditAnywhere)
 	class UCapsuleComponent *CapsuleComponent;

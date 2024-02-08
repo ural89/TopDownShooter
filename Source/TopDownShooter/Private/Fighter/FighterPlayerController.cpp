@@ -10,7 +10,8 @@ void AFighterPlayerController::SetupInputComponent()
 {
     Super::SetupInputComponent();
     InputComponent->BindAxis(TEXT("MoveForward"), this, &AFighterPlayerController::MoveForward);
-    InputComponent->BindAxis(TEXT("MoveRight"), this, &AFighterPlayerController::MoveRight); // TODO: make this controller as default player controller
+    InputComponent->BindAxis(TEXT("MoveRight"), this, &AFighterPlayerController::MoveRight); 
+    InputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AFighterPlayerController::Interact);
 } 
 void AFighterPlayerController::BeginPlay()
 {
@@ -39,4 +40,9 @@ void AFighterPlayerController::MoveForward(float AxisValue)
 {
     if (OwnerFighter)
         OwnerFighter->MoveForward(AxisValue);
+}
+void AFighterPlayerController::Interact()
+{
+    if(OwnerFighter)
+        OwnerFighter->Interact();
 }

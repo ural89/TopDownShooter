@@ -6,7 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Fighter/FighterMovement.h"
 #include "Fighter/Inventory.h"
-
+#include "Vehicle/VehiclePawn.h"
 // Sets default values
 AFighterBase::AFighterBase()
 {
@@ -111,4 +111,12 @@ void AFighterBase::MoveForward(float axisValue)
 void AFighterBase::MoveRight(float axisValue)
 {
 	MoveDirection.Y = axisValue;
+}
+void AFighterBase::Interact()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Interacted!!"));
+}
+void AFighterBase::GetInVehicle(AVehiclePawn& Vehicle)
+{
+	
 }

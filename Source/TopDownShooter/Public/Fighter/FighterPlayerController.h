@@ -19,6 +19,7 @@ public:
 	virtual void SetupInputComponent() override;
 	void MoveRight(float AxisValue);
 	void MoveForward(float AxisValue);
+	void Interact();
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
