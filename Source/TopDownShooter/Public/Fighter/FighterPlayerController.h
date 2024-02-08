@@ -19,12 +19,17 @@ public:
 	virtual void SetupInputComponent() override;
 	void MoveRight(float AxisValue);
 	void MoveForward(float AxisValue);
+	void BindInputs();
+	void UnbindInputs();
 	void Interact();
 protected:
 	virtual void BeginPlay() override;
 	virtual void OnPossess(APawn* InPawn) override;
 
 private:
+	void Stop();
+	
 	class AFighterBase* OwnerFighter;
+	class AVehiclePawn* OwnerVehicle;
 friend class AFighterBase;
 };

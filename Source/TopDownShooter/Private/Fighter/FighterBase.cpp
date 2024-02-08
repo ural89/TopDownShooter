@@ -7,6 +7,7 @@
 #include "Fighter/FighterMovement.h"
 #include "Fighter/Inventory.h"
 #include "Vehicle/VehiclePawn.h"
+#include "Fighter/FighterPlayerController.h"
 // Sets default values
 AFighterBase::AFighterBase()
 {
@@ -42,6 +43,11 @@ AFighterBase::AFighterBase()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 
+	TriggerCollider = CreateDefaultSubobject<UCapsuleComponent>(TEXT("TriggerCollider"));
+	TriggerCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	TriggerCollider->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+	TriggerCollider->SetupAttachment(RootComponent);
+
 	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 }
 
@@ -71,7 +77,24 @@ void AFighterBase::Tick(float DeltaTime)
 	LookMoveDirection();
 	UpdateAnimationVariables();
 }
+void AFighterBase::NotifyActorBeginOverlap(AActor *OtherActor)
+{
+	Super::NotifyActorBeginOverlap(OtherActor);
 
+	
+	if (AVehiclePawn *OverlappedVehicle = Cast<AVehiclePawn>(OtherActor))
+	{
+		Car = OverlappedVehicle; 
+	}
+}
+
+void AFighterBase::NotifyActorEndOverlap(AActor* OtherActor)
+{
+	if(AVehiclePawn *OverlapVehicle = Cast<AVehiclePawn>(OtherActor))
+	{
+		Car = nullptr;
+	}
+}
 void AFighterBase::UpdateMovement()
 {
 	MoveDirection.Normalize();
@@ -80,7 +103,8 @@ void AFighterBase::UpdateMovement()
 
 void AFighterBase::LookMoveDirection()
 {
-	 LookDirection(MoveDirection);
+	// if (!IsDriving)
+	LookDirection(MoveDirection);
 }
 
 void AFighterBase::LookDirection(FVector LookDirection)
@@ -115,8 +139,21 @@ void AFighterBase::MoveRight(float axisValue)
 void AFighterBase::Interact()
 {
 
+	IsDriving = true;
+
 	if (Car)
+	{
+		if (auto controller = Cast<AFighterPlayerController>(GetController()))
+		{
+			MoveDirection = FVector::Zero();
+			controller->UnbindInputs();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Player controller not found!"));
+		}
 		GetController()->Possess(Car);
+	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Car is not attached!"));

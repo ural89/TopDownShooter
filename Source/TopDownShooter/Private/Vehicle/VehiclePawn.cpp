@@ -7,9 +7,9 @@ void AVehiclePawn::Tick(float DeltaSeconds)
    Super::Tick(DeltaSeconds);
 
 
-   if (UChaosVehicleMovementComponent *VehicleMovementComponent = GetVehicleMovement())
+   if (UChaosVehicleMovementComponent *vmc = GetVehicleMovement())
    {
-      // VehicleMovementComponent->SetSteeringInput(1.f); 
-      // VehicleMovementComponent->SetThrottleInput(0.4f);
+      // vmc->SetSteeringInput(1.f); 
+      // vmc->SetThrottleInput(0.4f);
    }
 }

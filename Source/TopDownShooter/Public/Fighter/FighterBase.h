@@ -35,6 +35,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	APawn *Car; // TODO: delete
+
+	
+	void NotifyActorBeginOverlap(AActor *OtherActor) override;
+	void NotifyActorEndOverlap(AActor* OtherActor) override;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -54,6 +58,9 @@ private:
 
 	UPROPERTY()
 	class UFighterMovement *MovementComponent;
+
+	UPROPERTY(VisibleAnywhere, Category = "Trigger")
+	UCapsuleComponent *TriggerCollider;
 
 	UPROPERTY(EditAnywhere)
 	class UInventory *Inventory;
