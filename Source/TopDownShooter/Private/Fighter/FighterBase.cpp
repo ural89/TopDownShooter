@@ -57,17 +57,18 @@ void AFighterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UpdateMovement();
-
-	if(!isInCar)
-	{
-		if(Car)
-		{
-			AttachToActor(Car, FAttachmentTransformRules::KeepRelativeTransform, TEXT("PawnSocket"));
-			UE_LOG(LogTemp, Warning, TEXT("attached to car"));
-			isInCar = true;
-		}
-	}
-	// LookMoveDirection();
+	// if (!isInCar) //attaching to car
+	// {
+	// 	if (Car)
+	// 	{
+	// 		CapsuleComponent->SetSimulatePhysics(false);
+	// 		AttachToActor(Car, FAttachmentTransformRules::KeepRelativeTransform, TEXT("PawnSocket"));
+	// 		UE_LOG(LogTemp, Warning, TEXT("attached to car"));
+	// 		isInCar = true;
+	// 		SetActorRelativeLocation(FVector(0, 0, 0));
+	// 	}
+	// }
+	LookMoveDirection();
 	UpdateAnimationVariables();
 }
 
