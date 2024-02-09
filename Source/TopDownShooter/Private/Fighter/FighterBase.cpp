@@ -6,7 +6,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Fighter/FighterMovement.h"
 #include "Fighter/Inventory.h"
-#include "Vehicle/VehiclePawn.h"
+#include "Interact/InteractInterface.h"
 #include "Fighter/FighterPlayerController.h"
 // Sets default values
 AFighterBase::AFighterBase()
@@ -67,11 +67,7 @@ void AFighterBase::Tick(float DeltaTime)
 	// {
 	// 	if (Car)
 	// 	{
-	// 		CapsuleComponent->SetSimulatePhysics(false);
-	// 		AttachToActor(Car, FAttachmentTransformRules::KeepRelativeTransform, TEXT("PawnSocket"));
-	// 		UE_LOG(LogTemp, Warning, TEXT("attached to car"));
-	// 		isInCar = true;
-	// 		SetActorRelativeLocation(FVector(0, 0, 0));
+	//
 	// 	}
 	// }
 	LookMoveDirection();
@@ -81,16 +77,15 @@ void AFighterBase::NotifyActorBeginOverlap(AActor *OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
 
-	
-	if (AVehiclePawn *OverlappedVehicle = Cast<AVehiclePawn>(OtherActor))
+	if (IInteractInterface *OverlappedVehicle = Cast<IInteractInterface>(OtherActor))
 	{
-		Car = OverlappedVehicle; 
+		Car = OverlappedVehicle;
 	}
 }
 
-void AFighterBase::NotifyActorEndOverlap(AActor* OtherActor)
+void AFighterBase::NotifyActorEndOverlap(AActor *OtherActor)
 {
-	if(AVehiclePawn *OverlapVehicle = Cast<AVehiclePawn>(OtherActor))
+	if (IInteractInterface *OverlapVehicle = Cast<IInteractInterface>(OtherActor))
 	{
 		Car = nullptr;
 	}
@@ -138,21 +133,30 @@ void AFighterBase::MoveRight(float axisValue)
 }
 void AFighterBase::Interact()
 {
-
+	if (IsDriving)
+		return;
 	IsDriving = true;
 
 	if (Car)
 	{
 		if (auto controller = Cast<AFighterPlayerController>(GetController()))
 		{
+			CapsuleComponent->SetSimulatePhysics(false);
+			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			MoveDirection = FVector::Zero();
 			controller->UnbindInputs();
+
+		    GetController()->Possess(Car->GetPawn());
+			AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("PawnSocket"));
+			// UE_LOG(LogTemp, Warning, TEXT("attached to car"));
+			// isInCar = true;
+			SetActorRelativeLocation(FVector(0, 0, 0));
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Player controller not found!"));
 		}
-		GetController()->Possess(Car);
+
 	}
 	else
 	{

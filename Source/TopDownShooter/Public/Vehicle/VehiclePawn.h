@@ -4,15 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "WheeledVehiclePawn.h"
+#include "Interact/InteractInterface.h"
 #include "VehiclePawn.generated.h"
-
 /**
  *
  */
 UCLASS()
-class TOPDOWNSHOOTER_API AVehiclePawn : public AWheeledVehiclePawn
+class TOPDOWNSHOOTER_API AVehiclePawn : public AWheeledVehiclePawn, public IInteractInterface
 {
 	GENERATED_BODY()
 public:
 	virtual void Tick(float DeltaTime) override;
+	void Interact(APawn* InteractorPawn) override;
+	APawn* GetPawn() override
+	{
+		return this;
+	}
 };

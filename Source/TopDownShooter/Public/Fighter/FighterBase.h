@@ -33,8 +33,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool IsDriving = false;
 
-	UPROPERTY(EditAnywhere)
-	APawn *Car; // TODO: delete
+
+	class IInteractInterface *Car; //maybe call possessable?
 
 	
 	void NotifyActorBeginOverlap(AActor *OtherActor) override;

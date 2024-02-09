@@ -4,6 +4,7 @@
 #include "Fighter/FighterBase.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "Interact/InteractInterface.h"
 AFighterAIController::AFighterAIController()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -106,7 +107,12 @@ void AFighterAIController::SetMoveTargetToEnemy()
 
 void AFighterAIController::SetMoveTargetToCar()
 {
-    MoveTarget = OwnerFighter->Car;
+    if (OwnerFighter->Car)
+        MoveTarget = OwnerFighter->Car->GetPawn();
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("AI cant find car!!!"));
+    }
 }
 void AFighterAIController::ClearMoveTarget()
 {
