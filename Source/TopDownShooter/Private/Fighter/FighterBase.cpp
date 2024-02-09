@@ -147,10 +147,11 @@ void AFighterBase::Interact()
 			controller->UnbindInputs();
 
 		    GetController()->Possess(Car->GetPawn());
-			AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("PawnSocket"));
+			AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("InCarPawnSocket"));
 			// UE_LOG(LogTemp, Warning, TEXT("attached to car"));
 			// isInCar = true;
 			SetActorRelativeLocation(FVector(0, 0, 0));
+			SetActorRelativeRotation(FRotator::ZeroRotator);
 		}
 		else
 		{
