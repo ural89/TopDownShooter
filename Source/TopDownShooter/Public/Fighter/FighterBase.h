@@ -44,11 +44,11 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	bool isInCar = false;
+
 	void UpdateMovement();
 	void UpdateAnimationVariables();
 
-	void GetInVehicle(class AVehiclePawn &Vehicle);
+	void GetInVehicle();
 
 	UPROPERTY(EditAnywhere)
 	class UCapsuleComponent *CapsuleComponent;

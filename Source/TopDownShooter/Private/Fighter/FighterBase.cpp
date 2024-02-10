@@ -135,35 +135,38 @@ void AFighterBase::Interact()
 {
 	if (IsDriving)
 		return;
-	IsDriving = true;
 
 	if (Car)
 	{
 		if (auto controller = Cast<AFighterPlayerController>(GetController()))
 		{
+			IsDriving = true;
 			CapsuleComponent->SetSimulatePhysics(false);
 			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			MoveDirection = FVector::Zero();
 			controller->UnbindInputs();
 			Car->Interact(this);
-		    GetController()->Possess(Car->GetPawn());
-			AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("InCarPawnSocket"));
-			// UE_LOG(LogTemp, Warning, TEXT("attached to car"));
-			// isInCar = true;
-			SetActorRelativeLocation(FVector(0, 0, 0));
-			SetActorRelativeRotation(FRotator::ZeroRotator);
+
+			FTimerHandle GetInCarTimerHandle;
+			GetWorldTimerManager().SetTimer(GetInCarTimerHandle, this, &AFighterBase::GetInVehicle, 2.f, false);
 		}
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Player controller not found!"));
 		}
-
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Car is not attached!"));
 	}
 }
-void AFighterBase::GetInVehicle(AVehiclePawn &Vehicle)
+void AFighterBase::GetInVehicle()
 {
+	GetController()->Possess(Car->GetPawn());
+	AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("InCarPawnSocket"));
+
+	SetActorRelativeLocation(FVector(0, 0, 0));
+	SetActorRelativeRotation(FRotator::ZeroRotator);
+	
+
 }

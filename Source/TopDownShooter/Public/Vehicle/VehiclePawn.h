@@ -13,6 +13,9 @@ UCLASS()
 class TOPDOWNSHOOTER_API AVehiclePawn : public AWheeledVehiclePawn, public IInteractInterface
 {
 	GENERATED_BODY()
+private:
+	UFUNCTION()
+	void CloseDoor();
 public:
 	virtual void Tick(float DeltaTime) override;
 	void Interact(APawn* InteractorPawn) override;
@@ -23,7 +26,7 @@ public:
 	}
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	bool IsDoorOpen = false;
+	bool IsLeftDoorOpen = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float LeftDoorAngle = 0;
