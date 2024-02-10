@@ -145,7 +145,7 @@ void AFighterBase::Interact()
 			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			MoveDirection = FVector::Zero();
 			controller->UnbindInputs();
-
+			Car->Interact(this);
 		    GetController()->Possess(Car->GetPawn());
 			AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("InCarPawnSocket"));
 			// UE_LOG(LogTemp, Warning, TEXT("attached to car"));

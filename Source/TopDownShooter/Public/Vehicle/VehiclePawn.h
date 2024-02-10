@@ -16,8 +16,15 @@ class TOPDOWNSHOOTER_API AVehiclePawn : public AWheeledVehiclePawn, public IInte
 public:
 	virtual void Tick(float DeltaTime) override;
 	void Interact(APawn* InteractorPawn) override;
+
 	APawn* GetPawn() override
 	{
 		return this;
 	}
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool IsDoorOpen = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	float LeftDoorAngle = 0;
 };

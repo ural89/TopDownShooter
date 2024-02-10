@@ -15,5 +15,8 @@ void AVehiclePawn::Tick(float DeltaSeconds)
 }
 void AVehiclePawn::Interact(APawn *InteractorPawn)
 {
+ 
+   IsDoorOpen = true;
+   //LeftDoorAngle = 45;
    UE_LOG(LogTemp, Warning, TEXT("Interacted"));
 }
