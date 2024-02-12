@@ -16,6 +16,9 @@ class TOPDOWNSHOOTER_API AVehiclePawn : public AWheeledVehiclePawn, public IInte
 private:
 	UFUNCTION()
 	void CloseDoor();
+
+	UFUNCTION()
+	void OpenDoor();
 public:
 	virtual void Tick(float DeltaTime) override;
 	void Interact(APawn* InteractorPawn) override;

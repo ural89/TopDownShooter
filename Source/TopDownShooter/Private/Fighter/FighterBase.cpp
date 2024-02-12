@@ -87,6 +87,7 @@ void AFighterBase::NotifyActorEndOverlap(AActor *OtherActor)
 {
 	if (IInteractInterface *OverlapVehicle = Cast<IInteractInterface>(OtherActor))
 	{
+
 		Car = nullptr;
 	}
 }
@@ -141,14 +142,19 @@ void AFighterBase::Interact()
 		if (auto controller = Cast<AFighterPlayerController>(GetController()))
 		{
 			IsDriving = true;
+			
+			FTimerDelegate GetInVehicleDelegate = FTimerDelegate::CreateUObject(this, &AFighterBase::GetInVehicle, Car);
+			FTimerHandle GetInCarTimerHandle;
+			GetWorldTimerManager().SetTimer(GetInCarTimerHandle, GetInVehicleDelegate, 1.5f, false);
+
 			CapsuleComponent->SetSimulatePhysics(false);
 			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			MoveDirection = FVector::Zero();
 			controller->UnbindInputs();
 			Car->Interact(this);
-
-			FTimerHandle GetInCarTimerHandle;
-			GetWorldTimerManager().SetTimer(GetInCarTimerHandle, this, &AFighterBase::GetInVehicle, 2.f, false);
+			AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("EnterCarSocket"));
+			SetActorRelativeLocation(FVector(0, 0, 0));
+			SetActorRelativeRotation(FRotator::ZeroRotator);
 		}
 		else
 		{
@@ -160,13 +166,19 @@ void AFighterBase::Interact()
 		UE_LOG(LogTemp, Warning, TEXT("Car is not attached!"));
 	}
 }
-void AFighterBase::GetInVehicle()
+void AFighterBase::GetInVehicle(IInteractInterface *Vehicle)
 {
-	GetController()->Possess(Car->GetPawn());
-	AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("InCarPawnSocket"));
+	// if (Car)
+	// {
+	// 	UE_LOG(LogTemp, Warning, TEXT("Car is there"));
+	// 	if (Car->GetPawn())
+	// 		UE_LOG(LogTemp, Warning, TEXT("Pawn is there in car"));
+	// }
+	// if (GetController())
+	// 	UE_LOG(LogTemp, Warning, TEXT("Controller is there"));
+	GetController()->Possess(Vehicle->GetPawn());
+	// AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("InCarPawnSocket"));
 
-	SetActorRelativeLocation(FVector(0, 0, 0));
-	SetActorRelativeRotation(FRotator::ZeroRotator);
-	
-
+	// SetActorRelativeLocation(FVector(0, 0, 0));
+	// SetActorRelativeRotation(FRotator::ZeroRotator);
 }

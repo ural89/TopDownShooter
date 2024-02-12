@@ -48,7 +48,7 @@ private:
 	void UpdateMovement();
 	void UpdateAnimationVariables();
 
-	void GetInVehicle();
+	void GetInVehicle(IInteractInterface* Vehicle);
 
 	UPROPERTY(EditAnywhere)
 	class UCapsuleComponent *CapsuleComponent;

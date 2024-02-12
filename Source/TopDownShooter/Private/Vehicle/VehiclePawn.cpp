@@ -27,15 +27,20 @@ void AVehiclePawn::Tick(float DeltaSeconds)
 }
 void AVehiclePawn::Interact(APawn *InteractorPawn)
 {
-   FTimerHandle CloseDoorTimerHandle;
-   GetWorldTimerManager().SetTimer(CloseDoorTimerHandle, this, &AVehiclePawn::CloseDoor, 2.f, false, 2.f);
-   IsLeftDoorOpen = true;
-   // LeftDoorAngle = 45;
-   UE_LOG(LogTemp, Warning, TEXT("Interacted"));
-}
+   FTimerHandle OpenDoorTimerHandle;
+   GetWorldTimerManager().SetTimer(OpenDoorTimerHandle, this, &AVehiclePawn::OpenDoor, 0.9f, false);
 
+   FTimerHandle CloseDoorTimerHandle;
+   GetWorldTimerManager().SetTimer(CloseDoorTimerHandle, this, &AVehiclePawn::CloseDoor, 4.f, false);
+   
+}
+void AVehiclePawn::OpenDoor()
+{
+   IsLeftDoorOpen = true;
+
+}
 void AVehiclePawn::CloseDoor()
 {
    IsLeftDoorOpen = false;
-   UE_LOG(LogTemp, Warning, TEXT("Door closed"));
+
 }
