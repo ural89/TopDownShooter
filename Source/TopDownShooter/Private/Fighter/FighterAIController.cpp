@@ -107,8 +107,8 @@ void AFighterAIController::SetMoveTargetToEnemy()
 
 void AFighterAIController::SetMoveTargetToCar()
 {
-    if (OwnerFighter->Car)
-        MoveTarget = OwnerFighter->Car->GetPawn();
+    if (OwnerFighter->Vehicle)
+        MoveTarget = OwnerFighter->Vehicle->GetPawn();
     else
     {
         UE_LOG(LogTemp, Warning, TEXT("AI cant find car!!!"));

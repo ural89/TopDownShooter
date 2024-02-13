@@ -8,6 +8,7 @@
 #include "Fighter/Inventory.h"
 #include "Interact/InteractInterface.h"
 #include "Fighter/FighterPlayerController.h"
+#include "Vehicle/VehiclePawn.h"
 // Sets default values
 AFighterBase::AFighterBase()
 {
@@ -79,7 +80,7 @@ void AFighterBase::NotifyActorBeginOverlap(AActor *OtherActor)
 
 	if (IInteractInterface *OverlappedVehicle = Cast<IInteractInterface>(OtherActor))
 	{
-		Car = OverlappedVehicle;
+		Interactable = OverlappedVehicle;
 	}
 }
 
@@ -88,7 +89,7 @@ void AFighterBase::NotifyActorEndOverlap(AActor *OtherActor)
 	if (IInteractInterface *OverlapVehicle = Cast<IInteractInterface>(OtherActor))
 	{
 
-		Car = nullptr;
+		Interactable = nullptr;
 	}
 }
 void AFighterBase::UpdateMovement()
@@ -137,24 +138,36 @@ void AFighterBase::Interact()
 	if (IsDriving)
 		return;
 
-	if (Car)
+	if (Interactable)
 	{
+		Vehicle = nullptr;
+		if (Cast<AVehiclePawn>(Interactable))
+		{
+			Vehicle = Interactable;
+			UE_LOG(LogTemp, Warning, TEXT("Vehicle is available"));
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Vehicle is not available"));
+		}
 		if (auto controller = Cast<AFighterPlayerController>(GetController()))
 		{
-			IsDriving = true;
-			
-			FTimerDelegate GetInVehicleDelegate = FTimerDelegate::CreateUObject(this, &AFighterBase::GetInVehicle, Car);
-			FTimerHandle GetInCarTimerHandle;
-			GetWorldTimerManager().SetTimer(GetInCarTimerHandle, GetInVehicleDelegate, 1.5f, false);
 
 			CapsuleComponent->SetSimulatePhysics(false);
 			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			MoveDirection = FVector::Zero();
 			controller->UnbindInputs();
-			Car->Interact(this);
-			AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("EnterCarSocket"));
-			SetActorRelativeLocation(FVector(0, 0, 0));
-			SetActorRelativeRotation(FRotator::ZeroRotator);
+			Interactable->Interact(this);
+			if (Vehicle)
+			{
+				IsDriving = true;
+				FTimerHandle GetInVehicleTimerHandle;
+				FTimerDelegate GetInVehicleDelegate = FTimerDelegate::CreateUObject(this, &AFighterBase::GetInVehicle, Vehicle);
+				GetWorldTimerManager().SetTimer(GetInVehicleTimerHandle, GetInVehicleDelegate, 1.5f, false);
+				AttachToActor(Vehicle->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("EnterCarSocket"));
+				SetActorRelativeLocation(FVector(0, 0, 0));
+				SetActorRelativeRotation(FRotator::ZeroRotator);
+			}
 		}
 		else
 		{
@@ -166,19 +179,7 @@ void AFighterBase::Interact()
 		UE_LOG(LogTemp, Warning, TEXT("Car is not attached!"));
 	}
 }
-void AFighterBase::GetInVehicle(IInteractInterface *Vehicle)
+void AFighterBase::GetInVehicle(IInteractInterface *_Vehicle)
 {
-	// if (Car)
-	// {
-	// 	UE_LOG(LogTemp, Warning, TEXT("Car is there"));
-	// 	if (Car->GetPawn())
-	// 		UE_LOG(LogTemp, Warning, TEXT("Pawn is there in car"));
-	// }
-	// if (GetController())
-	// 	UE_LOG(LogTemp, Warning, TEXT("Controller is there"));
-	GetController()->Possess(Vehicle->GetPawn());
-	// AttachToActor(Car->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("InCarPawnSocket"));
-
-	// SetActorRelativeLocation(FVector(0, 0, 0));
-	// SetActorRelativeRotation(FRotator::ZeroRotator);
+	GetController()->Possess(_Vehicle->GetPawn());
 }

@@ -20,6 +20,7 @@ public:
 	virtual void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult &Result) override;
 	virtual void BeginPlay() override;
 
+
 	AActor *GetTargetActor() const
 	{
 		return PercievedEnemy;
@@ -52,7 +53,6 @@ private:
 	AActor *LookTarget;
 	AActor *MoveTarget;
 
-	//AActor *Car; //TODO: find this via colliders
 	
 	void SetupPerception();
 	void UpdatePath();

@@ -33,9 +33,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool IsDriving = false;
 
-
-	class IInteractInterface *Car; //maybe call possessable?
-
+	class IInteractInterface *Interactable; //maybe call possessable?
+	 IInteractInterface *Vehicle;
 	
 	void NotifyActorBeginOverlap(AActor *OtherActor) override;
 	void NotifyActorEndOverlap(AActor* OtherActor) override;
