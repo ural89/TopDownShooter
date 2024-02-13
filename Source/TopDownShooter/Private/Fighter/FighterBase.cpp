@@ -141,9 +141,9 @@ void AFighterBase::Interact()
 	if (Interactable)
 	{
 		Vehicle = nullptr;
-		if (Cast<AVehiclePawn>(Interactable))
+		if (auto vehicle = Cast<AVehiclePawn>(Interactable))
 		{
-			Vehicle = Interactable;
+			Vehicle = vehicle;
 			UE_LOG(LogTemp, Warning, TEXT("Vehicle is available"));
 		}
 		else
@@ -165,7 +165,7 @@ void AFighterBase::Interact()
 				FTimerDelegate GetInVehicleDelegate = FTimerDelegate::CreateUObject(this, &AFighterBase::GetInVehicle, Vehicle);
 				GetWorldTimerManager().SetTimer(GetInVehicleTimerHandle, GetInVehicleDelegate, 1.5f, false);
 				AttachToActor(Vehicle->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("EnterCarSocket"));
-				SetActorRelativeLocation(FVector(0, 0, 0));
+				SetActorRelativeLocation(FVector(0, 0, 0)); //TODO: fix if moving it will not move zero point
 				SetActorRelativeRotation(FRotator::ZeroRotator);
 			}
 		}
@@ -179,7 +179,9 @@ void AFighterBase::Interact()
 		UE_LOG(LogTemp, Warning, TEXT("Car is not attached!"));
 	}
 }
-void AFighterBase::GetInVehicle(IInteractInterface *_Vehicle)
+void AFighterBase::GetInVehicle(AVehiclePawn *_Vehicle)
 {
+	SetActorRelativeLocation(FVector(0, 0, 0));
+	SetActorRelativeRotation(FRotator::ZeroRotator);
 	GetController()->Possess(_Vehicle->GetPawn());
 }

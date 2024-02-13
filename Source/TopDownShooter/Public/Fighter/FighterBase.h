@@ -33,21 +33,23 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool IsDriving = false;
 
-	class IInteractInterface *Interactable; //maybe call possessable?
-	 IInteractInterface *Vehicle;
-	
+	class IInteractInterface *Interactable; // maybe call possessable?
+
+	UPROPERTY(EditAnywhere)
+	class AVehiclePawn *Vehicle;
+
 	void NotifyActorBeginOverlap(AActor *OtherActor) override;
-	void NotifyActorEndOverlap(AActor* OtherActor) override;
+	void NotifyActorEndOverlap(AActor *OtherActor) override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-
 	void UpdateMovement();
 	void UpdateAnimationVariables();
 
-	void GetInVehicle(IInteractInterface* Vehicle);
+	void GetInVehicle(AVehiclePawn *Vehicle);
 
 	UPROPERTY(EditAnywhere)
 	class UCapsuleComponent *CapsuleComponent;
