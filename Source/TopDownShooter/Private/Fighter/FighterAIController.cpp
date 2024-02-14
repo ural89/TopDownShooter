@@ -5,6 +5,7 @@
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Interact/InteractInterface.h"
+#include "Vehicle/VehiclePawn.h"
 AFighterAIController::AFighterAIController()
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -29,7 +30,7 @@ void AFighterAIController::OnPossess(APawn *InPawn)
 {
     Super::OnPossess(InPawn);
     OwnerFighter = Cast<AFighterBase>(InPawn);
-
+    //TODO: if vehicle
     FTimerHandle CreatePathTimerHandle;
     GetWorld()->GetTimerManager().SetTimer(CreatePathTimerHandle, this, &AFighterAIController::UpdatePath, 0.1f, true);
 }
@@ -58,7 +59,7 @@ void AFighterAIController::UpdatePath() // TODO: wire this to BT to a service
 }
 void AFighterAIController::MoveToTarget()
 {
-    if (MoveTarget)
+    if (OwnerFighter && MoveTarget)
     {
         FVector DirectionToTarget = GetPathFollowingComponent()->GetCurrentDirection(); // (TargetActor->GetActorLocation() - OwnerFighter->GetActorLocation()).GetSafeNormal();
 
@@ -74,7 +75,7 @@ void AFighterAIController::MoveToTarget()
 }
 void AFighterAIController::LookAtTarget()
 {
-    if (LookTarget)
+    if (OwnerFighter && LookTarget)
     {
         FVector DirectionToTarget = (LookTarget->GetActorLocation() - OwnerFighter->GetActorLocation()).GetSafeNormal();
         OwnerFighter->LookDirection(DirectionToTarget);
@@ -107,11 +108,14 @@ void AFighterAIController::SetMoveTargetToEnemy()
 
 void AFighterAIController::SetMoveTargetToCar()
 {
-    if (OwnerFighter->Vehicle)
-        MoveTarget = OwnerFighter->Vehicle->GetPawn();
-    else
+    if (OwnerFighter)
     {
-        UE_LOG(LogTemp, Warning, TEXT("AI cant find car!!!"));
+        if (OwnerFighter->Vehicle)
+            MoveTarget = OwnerFighter->Vehicle->GetPawn();
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("AI cant find car!!!"));
+        }
     }
 }
 void AFighterAIController::ClearMoveTarget()
@@ -124,7 +128,7 @@ void AFighterAIController::ClearLookTarget()
 }
 float AFighterAIController::GetDistanceToTarget()
 {
-    if (MoveTarget)
+    if (OwnerFighter && MoveTarget)
     {
         return FVector::Dist(OwnerFighter->GetActorLocation(), MoveTarget->GetActorLocation());
     }
@@ -132,9 +136,12 @@ float AFighterAIController::GetDistanceToTarget()
 }
 void AFighterAIController::Stop()
 {
-    OwnerFighter->MoveForward(0);
-    OwnerFighter->MoveRight(0);
-    canMove = false;
+    if(OwnerFighter)
+    {
+        OwnerFighter->MoveForward(0);
+        OwnerFighter->MoveRight(0);
+        canMove = false;
+    }
 }
 void AFighterAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult &Result)
 {

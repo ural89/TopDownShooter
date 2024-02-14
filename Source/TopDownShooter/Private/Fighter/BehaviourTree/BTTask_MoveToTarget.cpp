@@ -2,7 +2,6 @@
 
 #include "Fighter/BehaviourTree/BTTask_MoveToTarget.h"
 #include "Fighter/FighterAIController.h"
-// TODO: create enum for look targets
 
 UBTTask_MoveToTarget::UBTTask_MoveToTarget()
 {
@@ -34,7 +33,7 @@ EBTNodeResult::Type UBTTask_MoveToTarget::ExecuteTask(UBehaviorTreeComponent &Ow
 void UBTTask_MoveToTarget::OnTaskFinished(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory, EBTNodeResult::Type TaskResult)
 {
     Super::OnTaskFinished(OwnerComp, NodeMemory, TaskResult);
-    UE_LOG(LogTemp, Warning, TEXT("TaskFinished"));
+    //UE_LOG(LogTemp, Warning, TEXT("TaskFinished"));
     if (auto FighterOwner = Cast<AFighterAIController>(OwnerComp.GetAIOwner()))
     {
         FighterOwner->ClearMoveTarget();

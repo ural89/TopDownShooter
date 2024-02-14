@@ -100,14 +100,18 @@ void AFighterBase::UpdateMovement()
 
 void AFighterBase::LookMoveDirection()
 {
-	// if (!IsDriving)
-	LookDirection(MoveDirection);
+	if (!IsDriving)
+		LookDirection(MoveDirection);
 }
 
 void AFighterBase::LookDirection(FVector LookDirection)
 {
+	// if (IsDriving)
+	// 	SetActorRelativeRotation(FRotator::ZeroRotator);
 	if (LookDirection == FVector::Zero() || CapsuleComponent == nullptr)
+	{
 		return;
+	}
 	FRotator LookRotation = LookDirection.Rotation();
 	LookRotation = FMath::Lerp(CapsuleComponent->GetComponentRotation(), LookRotation, GetWorld()->GetDeltaSeconds() * 5);
 	CapsuleComponent->SetWorldRotation(LookRotation);
@@ -135,6 +139,7 @@ void AFighterBase::MoveRight(float axisValue)
 }
 void AFighterBase::Interact()
 {
+
 	if (IsDriving)
 		return;
 
@@ -150,28 +155,29 @@ void AFighterBase::Interact()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Vehicle is not available"));
 		}
-		if (auto controller = Cast<AFighterPlayerController>(GetController()))
-		{
 
+		Interactable->Interact(this);
+		if (Vehicle)
+		{
+			if (auto controller = Cast<AFighterPlayerController>(GetController()))
+			{
+
+				controller->UnbindInputs();
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Player controller not found!"));
+			}
+			IsDriving = true;
+			MoveDirection = FVector::Zero();
+			SetActorRelativeLocation(FVector(0, 0, 0)); // TODO: fix if moving it will not move zero point
+			SetActorRelativeRotation(FRotator::ZeroRotator);
 			CapsuleComponent->SetSimulatePhysics(false);
 			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-			MoveDirection = FVector::Zero();
-			controller->UnbindInputs();
-			Interactable->Interact(this);
-			if (Vehicle)
-			{
-				IsDriving = true;
-				FTimerHandle GetInVehicleTimerHandle;
-				FTimerDelegate GetInVehicleDelegate = FTimerDelegate::CreateUObject(this, &AFighterBase::GetInVehicle, Vehicle);
-				GetWorldTimerManager().SetTimer(GetInVehicleTimerHandle, GetInVehicleDelegate, 1.5f, false);
-				AttachToActor(Vehicle->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("EnterCarSocket"));
-				SetActorRelativeLocation(FVector(0, 0, 0)); //TODO: fix if moving it will not move zero point
-				SetActorRelativeRotation(FRotator::ZeroRotator);
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Player controller not found!"));
+			FTimerHandle GetInVehicleTimerHandle;
+			FTimerDelegate GetInVehicleDelegate = FTimerDelegate::CreateUObject(this, &AFighterBase::GetInVehicle, Vehicle);
+			GetWorldTimerManager().SetTimer(GetInVehicleTimerHandle, GetInVehicleDelegate, 1.5f, false);
+			AttachToActor(Vehicle->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("EnterCarSocket"));
 		}
 	}
 	else

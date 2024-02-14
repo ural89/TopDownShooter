@@ -13,5 +13,7 @@ UCLASS()
 class TOPDOWNSHOOTER_API UBTTask_GetInVehicle : public UBTTask_BlackboardBase
 {
 	GENERATED_BODY()
+protected:
+	EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory) override;
 	
 };
