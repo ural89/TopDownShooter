@@ -19,8 +19,8 @@ void AFighterAIController::SetupPerception()
     AISight->LoseSightRadius = looseSightRadius;
     AISight->PeripheralVisionAngleDegrees = 180;
     AISight->DetectionByAffiliation.bDetectEnemies = true;
-    AISight->DetectionByAffiliation.bDetectFriendlies = true;
-    AISight->DetectionByAffiliation.bDetectNeutrals = true;
+    AISight->DetectionByAffiliation.bDetectFriendlies = false;
+    AISight->DetectionByAffiliation.bDetectNeutrals = false;
     AISight->AutoSuccessRangeFromLastSeenLocation = 1500;
     PerceptionComponent->ConfigureSense(*AISight);
     PerceptionComponent->SetDominantSense(AISight->GetSenseImplementation());
@@ -38,9 +38,9 @@ void AFighterAIController::OnPossess(APawn *InPawn)
             RunBehaviorTree(PedestrianBehavior);
         }
     }
-    if(OwnerVehicle)
+    if (OwnerVehicle)
     {
-        if(CarDriveBehaviour != nullptr)
+        if (CarDriveBehaviour != nullptr)
         {
             RunBehaviorTree(CarDriveBehaviour);
         }
@@ -71,17 +71,27 @@ void AFighterAIController::UpdatePath() // TODO: wire this to BT to a service
 }
 void AFighterAIController::MoveToTarget()
 {
-    if (OwnerFighter && MoveTarget)
+    if (MoveTarget)
     {
-        FVector DirectionToTarget = GetPathFollowingComponent()->GetCurrentDirection(); // (TargetActor->GetActorLocation() - OwnerFighter->GetActorLocation()).GetSafeNormal();
+        FVector DirectionToTarget = GetPathFollowingComponent()->GetCurrentDirection();
 
         FVector MoveDirection = DirectionToTarget;
+        if (OwnerFighter)
+        {
 
-        OwnerFighter->MoveForward(MoveDirection.X);
-        OwnerFighter->MoveRight(MoveDirection.Y);
+            OwnerFighter->MoveForward(MoveDirection.Y);
+            OwnerFighter->MoveRight(MoveDirection.X);
+        }
+        if (OwnerVehicle)
+        {
+
+            OwnerVehicle->MoveForward(MoveDirection.Y);
+            OwnerVehicle->MoveRight(MoveDirection.X);
+        }
     }
     else
     {
+        // UE_LOG(LogTemp, Warning, TEXT("No move target"));
         Stop();
     }
 }
@@ -97,10 +107,19 @@ void AFighterAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimul
 {
     if (Actor)
     {
-        PercievedEnemy = Actor;
-        canMove = true;
-        UE_LOG(LogTemp, Warning, TEXT("Percieved Actor"));
-        UpdatePath();
+        if (const APawn *OtherPawn = Cast<APawn>(Actor))
+        {
+            if (IGenericTeamAgentInterface *OtherTeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn->GetController()))
+            {
+                if (OtherTeamAgent->GetGenericTeamId() == 1)
+                {
+                    PercievedEnemy = Actor;
+                    canMove = true;
+                    UE_LOG(LogTemp, Warning, TEXT("Percieved Actor %s"), *(Actor->GetName()));
+                    UpdatePath();
+                }
+            }
+        }
     }
     else // TODO: handle forgetting
     {
@@ -163,4 +182,23 @@ void AFighterAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFo
         TargetActor = nullptr;
         //   Stop();
     }
+}
+
+ETeamAttitude::Type AFighterAIController::GetTeamAttitudeTowards(const AActor &Other) const
+{
+    if (const APawn *OtherPawn = Cast<APawn>(&Other))
+    {
+        if (IGenericTeamAgentInterface *OtherTeamAgent = Cast<IGenericTeamAgentInterface>(OtherPawn->GetController()))
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Percieved actir id: %i"), OtherTeamAgent->GetGenericTeamId());
+            if (OtherTeamAgent->GetGenericTeamId() == 1)
+                return ETeamAttitude::Hostile;
+            else
+            {
+                return ETeamAttitude::Neutral;
+            }
+        }
+    }
+
+    return ETeamAttitude::Neutral;
 }

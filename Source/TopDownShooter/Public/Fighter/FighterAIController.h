@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "GenericTeamAgentInterface.h"
 #include "FighterAIController.generated.h"
 
 /**
@@ -34,6 +35,7 @@ public:
 	void ClearMoveTarget();
 	float GetDistanceToTarget();
 
+	ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
 
 protected:
 	virtual void OnPossess(APawn *InPawn) override;

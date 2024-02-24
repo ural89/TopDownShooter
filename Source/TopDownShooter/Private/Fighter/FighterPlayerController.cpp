@@ -5,6 +5,7 @@
 #include "Vehicle/VehiclePawn.h"
 AFighterPlayerController::AFighterPlayerController()
 {
+    TeamId = FGenericTeamId(1);
 }
 
 void AFighterPlayerController::SetupInputComponent()
@@ -14,8 +15,8 @@ void AFighterPlayerController::SetupInputComponent()
 }
 void AFighterPlayerController::BindInputs()
 {
-    InputComponent->BindAxis(TEXT("MoveForward"), this, &AFighterPlayerController::MoveForward);
-    InputComponent->BindAxis(TEXT("MoveRight"), this, &AFighterPlayerController::MoveRight);
+    InputComponent->BindAxis(TEXT("MoveRight"), this, &AFighterPlayerController::MoveForward);
+    InputComponent->BindAxis(TEXT("MoveForward"), this, &AFighterPlayerController::MoveRight);
     InputComponent->BindAction(TEXT("Interact"), EInputEvent::IE_Pressed, this, &AFighterPlayerController::Interact);
 }
 void AFighterPlayerController::UnbindInputs()
@@ -67,4 +68,9 @@ void AFighterPlayerController::Interact()
 {
     if (OwnerFighter)
         OwnerFighter->Interact();
+}
+
+FGenericTeamId AFighterPlayerController::GetGenericTeamId() const
+{
+    return TeamId;
 }

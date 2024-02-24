@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "GenericTeamAgentInterface.h"
 #include "FighterPlayerController.generated.h"
 
 /**
  *
  */
 UCLASS()
-class TOPDOWNSHOOTER_API AFighterPlayerController : public APlayerController
+class TOPDOWNSHOOTER_API AFighterPlayerController : public APlayerController, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 public:
@@ -22,14 +23,19 @@ public:
 	void BindInputs();
 	void UnbindInputs();
 	void Interact();
+
 protected:
 	virtual void BeginPlay() override;
-	virtual void OnPossess(APawn* InPawn) override;
+	virtual void OnPossess(APawn *InPawn) override;
 
 private:
 	void Stop();
+
+	class AFighterBase *OwnerFighter;
+	class AVehiclePawn *OwnerVehicle;
+
+	FGenericTeamId TeamId;
+	FGenericTeamId GetGenericTeamId() const;
 	
-	class AFighterBase* OwnerFighter;
-	class AVehiclePawn* OwnerVehicle;
-friend class AFighterBase;
+	friend class AFighterBase;
 };

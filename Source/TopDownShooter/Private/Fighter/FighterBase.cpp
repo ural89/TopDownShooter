@@ -130,12 +130,12 @@ void AFighterBase::UpdateAnimationVariables()
 
 void AFighterBase::MoveForward(float axisValue)
 {
-	MoveDirection.X = axisValue;
+	MoveDirection.Y = axisValue;
 }
 
 void AFighterBase::MoveRight(float axisValue)
 {
-	MoveDirection.Y = axisValue;
+	MoveDirection.X = axisValue;
 }
 void AFighterBase::Interact()
 {

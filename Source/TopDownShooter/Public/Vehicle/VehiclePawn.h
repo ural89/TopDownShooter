@@ -13,17 +13,14 @@ UCLASS()
 class TOPDOWNSHOOTER_API AVehiclePawn : public AWheeledVehiclePawn, public IInteractInterface
 {
 	GENERATED_BODY()
-private:
-	UFUNCTION()
-	void CloseDoor();
-
-	UFUNCTION()
-	void OpenDoor();
 public:
+	AVehiclePawn();
 	virtual void Tick(float DeltaTime) override;
-	void Interact(APawn* InteractorPawn) override;
+	void Interact(APawn *InteractorPawn) override;
 
-	APawn* GetPawn() override
+	void MoveForward(float axisValue);
+	void MoveRight(float axisValue);
+	APawn *GetPawn() override
 	{
 		return this;
 	}
@@ -33,4 +30,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float LeftDoorAngle = 0;
+
+private:
+	UFUNCTION()
+	void CloseDoor();
+
+	UFUNCTION()
+	void OpenDoor();
+
+	class UChaosVehicleMovementComponent* VehicleMovementComponent;
 };
