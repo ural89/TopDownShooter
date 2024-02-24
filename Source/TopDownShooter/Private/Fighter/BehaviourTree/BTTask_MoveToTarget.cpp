@@ -19,14 +19,17 @@ EBTNodeResult::Type UBTTask_MoveToTarget::ExecuteTask(UBehaviorTreeComponent &Ow
         {
         case EMoveType::Enemy:
             FighterOwner->SetMoveTargetToEnemy();
+            UE_LOG(LogTemp, Warning, TEXT("SettoEnemy"));
             break;
 
         case EMoveType::Car:
             FighterOwner->SetMoveTargetToCar();
+            UE_LOG(LogTemp, Warning, TEXT("SettoCar"));
             break;
         }
         return EBTNodeResult::InProgress;
     }
+    UE_LOG(LogTemp, Warning, TEXT("Failed"));
     return EBTNodeResult::Failed;
 }
 

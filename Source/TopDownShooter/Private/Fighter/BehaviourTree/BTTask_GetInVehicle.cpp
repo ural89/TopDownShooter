@@ -3,6 +3,10 @@
 #include "Fighter/BehaviourTree/BTTask_GetInVehicle.h"
 #include "Fighter/FighterBase.h"
 #include "AIController.h"
+UBTTask_GetInVehicle::UBTTask_GetInVehicle()
+{
+    NodeName = "GetInVehicle";
+}
 EBTNodeResult::Type UBTTask_GetInVehicle::ExecuteTask(UBehaviorTreeComponent &OwnerComp, uint8 *NodeMemory)
 {
     Super::ExecuteTask(OwnerComp, NodeMemory);

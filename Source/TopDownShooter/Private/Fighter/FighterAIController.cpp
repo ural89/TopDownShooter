@@ -83,7 +83,7 @@ void AFighterAIController::LookAtTarget()
 }
 void AFighterAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) // this is only called once detected
 {
-    if (Actor) // TODO: add if enemy for this actor
+    if (Actor) 
     {
         PercievedEnemy = Actor;
         canMove = true;

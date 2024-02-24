@@ -170,7 +170,7 @@ void AFighterBase::Interact()
 			}
 			IsDriving = true;
 			MoveDirection = FVector::Zero();
-			SetActorRelativeLocation(FVector(0, 0, 0)); // TODO: fix if moving it will not move zero point
+			SetActorRelativeLocation(FVector(0, 0, 0)); 
 			SetActorRelativeRotation(FRotator::ZeroRotator);
 			CapsuleComponent->SetSimulatePhysics(false);
 			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -182,7 +182,7 @@ void AFighterBase::Interact()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Car is not attached!"));
+		UE_LOG(LogTemp, Warning, TEXT("Car is not found!"));
 	}
 }
 void AFighterBase::GetInVehicle(AVehiclePawn *_Vehicle)
