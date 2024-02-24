@@ -47,6 +47,7 @@ private:
 	float looseSightRadius = 200;
 
 	class AFighterBase *OwnerFighter;
+	class AVehiclePawn* OwnerVehicle;
 	class UAISenseConfig_Sight *AISight;
 	AActor *TargetActor;
 	AActor *PercievedEnemy;
@@ -64,4 +65,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	class UBehaviorTree *PedestrianBehavior;
+	
+	UPROPERTY(EditAnywhere)
+	UBehaviorTree *CarDriveBehaviour;
 };

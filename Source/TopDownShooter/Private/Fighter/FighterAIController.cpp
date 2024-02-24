@@ -30,17 +30,29 @@ void AFighterAIController::OnPossess(APawn *InPawn)
 {
     Super::OnPossess(InPawn);
     OwnerFighter = Cast<AFighterBase>(InPawn);
-    //TODO: if vehicle
+    OwnerVehicle = Cast<AVehiclePawn>(InPawn);
+    if (OwnerFighter)
+    {
+        if (PedestrianBehavior != nullptr)
+        {
+            RunBehaviorTree(PedestrianBehavior);
+        }
+    }
+    if(OwnerVehicle)
+    {
+        if(CarDriveBehaviour != nullptr)
+        {
+            RunBehaviorTree(CarDriveBehaviour);
+        }
+    }
+    UE_LOG(LogTemp, Warning, TEXT("InPawn name %s"), *(InPawn->GetName()));
+
     FTimerHandle CreatePathTimerHandle;
     GetWorld()->GetTimerManager().SetTimer(CreatePathTimerHandle, this, &AFighterAIController::UpdatePath, 0.1f, true);
 }
 void AFighterAIController::BeginPlay()
 {
     Super::BeginPlay();
-    if (PedestrianBehavior != nullptr)
-    {
-        RunBehaviorTree(PedestrianBehavior);
-    }
 }
 void AFighterAIController::Tick(float DeltaTime)
 {
@@ -83,7 +95,7 @@ void AFighterAIController::LookAtTarget()
 }
 void AFighterAIController::OnPerceptionUpdated(AActor *Actor, FAIStimulus Stimulus) // this is only called once detected
 {
-    if (Actor) 
+    if (Actor)
     {
         PercievedEnemy = Actor;
         canMove = true;
@@ -136,7 +148,7 @@ float AFighterAIController::GetDistanceToTarget()
 }
 void AFighterAIController::Stop()
 {
-    if(OwnerFighter)
+    if (OwnerFighter)
     {
         OwnerFighter->MoveForward(0);
         OwnerFighter->MoveRight(0);
