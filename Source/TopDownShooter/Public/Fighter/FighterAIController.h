@@ -45,6 +45,7 @@ private:
 	float stoppingRange = 200;
 
 	// Perception variables
+	UPROPERTY(EditAnywhere)
 	float sightRadius = 600;
 	float looseSightRadius = 200;
 

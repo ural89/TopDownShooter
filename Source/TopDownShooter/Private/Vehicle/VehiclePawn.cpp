@@ -36,14 +36,14 @@ void AVehiclePawn::MoveForward(float axisValue)
 {
    if (VehicleMovementComponent)
    {
-      // VehicleMovementComponent->SetThrottleInput(axisValue);
+      VehicleMovementComponent->SetThrottleInput(axisValue);
    }
 }
 void AVehiclePawn::MoveRight(float axisValue)
 {
    if (VehicleMovementComponent)
    {
-      UE_LOG(LogTemp, Warning, TEXT("Right %f"), axisValue);
+      // UE_LOG(LogTemp, Warning, TEXT("Right %f"), axisValue);
       VehicleMovementComponent->SetSteeringInput(axisValue);
       // vmc->SetSteeringInput(1.f);
       // vmc->SetThrottleInput(0.4f);

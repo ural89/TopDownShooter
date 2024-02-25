@@ -84,9 +84,10 @@ void AFighterAIController::MoveToTarget()
         }
         if (OwnerVehicle)
         {
-
-            OwnerVehicle->MoveForward(MoveDirection.Y);
-            OwnerVehicle->MoveRight(MoveDirection.X);
+            FVector LocalDirection = OwnerVehicle->GetTransform().InverseTransformVectorNoScale(DirectionToTarget);
+            FVector RotatedDirection = FVector(LocalDirection.Y, -LocalDirection.X, LocalDirection.Z);
+            OwnerVehicle->MoveForward(1);
+            OwnerVehicle->MoveRight(RotatedDirection.X);
         }
     }
     else
