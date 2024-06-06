@@ -176,7 +176,7 @@ void AFighterBase::Interact()
 			CapsuleComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			FTimerHandle GetInVehicleTimerHandle;
 			FTimerDelegate GetInVehicleDelegate = FTimerDelegate::CreateUObject(this, &AFighterBase::GetInVehicle, Vehicle);
-			GetWorldTimerManager().SetTimer(GetInVehicleTimerHandle, GetInVehicleDelegate, 1.5f, false);
+			GetWorldTimerManager().SetTimer(GetInVehicleTimerHandle, GetInVehicleDelegate, 2.5f, false);
 			AttachToActor(Vehicle->GetPawn(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("EnterCarSocket"));
 		}
 	}
